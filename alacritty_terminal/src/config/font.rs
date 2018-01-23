@@ -44,6 +44,10 @@ pub struct Font {
     #[cfg(target_os = "macos")]
     #[serde(deserialize_with = "failure_default")]
     use_thin_strokes: DefaultTrueBool,
+
+    /// Whether to use fullwidth for east asian (ambiguous) characters
+    #[serde(default, deserialize_with = "failure_default")]
+    east_asian_fullwidth: bool,
 }
 
 impl Default for Font {
@@ -57,6 +61,7 @@ impl Default for Font {
             offset: Default::default(),
             #[cfg(target_os = "macos")]
             use_thin_strokes: Default::default(),
+            east_asian_fullwidth: Default::default(),
         }
     }
 }
@@ -90,6 +95,11 @@ impl Font {
     #[cfg(not(target_os = "macos"))]
     pub fn use_thin_strokes(&self) -> bool {
         false
+    }
+
+    /// Get east asian characters width
+    pub fn east_asian_fullwidth(&self) -> bool {
+        self.east_asian_fullwidth
     }
 }
 

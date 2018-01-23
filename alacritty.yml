@@ -167,6 +167,10 @@ font:
   # effect.
   use_thin_strokes: true
 
+  # Fonts for some east asian languages (mainly CJK) usually expects
+  # that some additional characters are wide.
+  east_asian_fullwidth: false
+
 # If `true`, bold text is drawn using the bright color variants.
 draw_bold_text_with_bright_colors: true
 
