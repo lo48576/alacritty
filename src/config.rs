@@ -1878,6 +1878,10 @@ pub struct Font {
 
     #[serde(default="true_bool", deserialize_with = "default_true_bool")]
     scale_with_dpi: bool,
+
+    /// Whether to use fullwidth for east asian (ambiguous) characters
+    #[serde(default, deserialize_with = "failure_default")]
+    east_asian_fullwidth: bool,
 }
 
 fn default_bold_desc() -> FontDescription {
@@ -1923,6 +1927,12 @@ impl Font {
         &self.glyph_offset
     }
 
+    /// Get east asian characters width
+    #[inline]
+    pub fn east_asian_fullwidth(&self) -> bool {
+        self.east_asian_fullwidth
+    }
+
     /// Get a font clone with a size modification
     pub fn with_size(self, size: Size) -> Font {
         Font {
@@ -1949,6 +1959,7 @@ impl Default for Font {
             scale_with_dpi: true,
             glyph_offset: Default::default(),
             offset: Default::default(),
+            east_asian_fullwidth: Default::default(),
         }
     }
 }
@@ -1965,6 +1976,7 @@ impl Default for Font {
             scale_with_dpi: true,
             glyph_offset: Default::default(),
             offset: Default::default(),
+            east_asian_fullwidth: Default::default(),
         }
     }
 }
