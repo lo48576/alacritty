@@ -904,7 +904,9 @@ impl<'a> RenderApi<'a> {
                 let glyph_key = GlyphKey {
                     font_key,
                     size: glyph_cache.font_size,
-                    c: '_',
+                    // Use U+23BD HORIZONTAL SCAN LINE-9,
+                    // which is available at "Unifont" font.
+                    c: '⎽',
                 };
 
                 let underscore = glyph_cache.get(glyph_key, self);
