@@ -122,6 +122,7 @@ impl From<glutin::ContextError> for Error {
 fn create_gl_window(
     mut window: WindowBuilder,
     event_loop: &EventsLoop,
+    transparency: bool,
     srgb: bool,
     dimensions: Option<LogicalSize>,
 ) -> Result<glutin::WindowedContext<PossiblyCurrent>> {
@@ -154,9 +155,10 @@ impl Window {
         let class = config.window.class.as_ref().map_or(DEFAULT_NAME, |c| c);
 
         let window_builder = Window::get_platform_window(title, class, &config.window);
-        let windowed_context =
-            create_gl_window(window_builder.clone(), &event_loop, false, dimensions)
-                .or_else(|_| create_gl_window(window_builder, &event_loop, true, dimensions))?;
+        let windowed_context = create_gl_window(window_builder.clone(), &event_loop, true, false, dimensions)
+            .or_else(|_| create_gl_window(window_builder.clone(), &event_loop, true, true, dimensions))
+            .or_else(|_| create_gl_window(window_builder.clone(), &event_loop, false, false, dimensions))
+            .or_else(|_| create_gl_window(window_builder, &event_loop, false, true, dimensions))?;
         let window = windowed_context.window();
         window.show();
 
