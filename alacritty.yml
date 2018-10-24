@@ -125,6 +125,10 @@ font:
   # `WINIT_HIDPI_FACTOR=1.0 alacritty` to scale the font.
   scale_with_dpi: true
 
+  # Fonts for some east asian languages (mainly CJK) usually expects
+  # that some additional characters are wide.
+  east_asian_fullwidth: false
+
 # Display the time it takes to redraw each frame.
 render_timer: false
 
