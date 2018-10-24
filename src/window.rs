@@ -208,8 +208,10 @@ impl From<glutin::ContextError> for Error {
 fn create_gl_window(
     window: WindowBuilder,
     event_loop: &EventsLoop,
+    transparency: bool,
     srgb: bool,
 ) -> ::std::result::Result<glutin::GlWindow, glutin::CreationError> {
+    let window = window.with_transparency(transparency);
     let context = ContextBuilder::new().with_srgb(srgb).with_vsync(true);
     ::glutin::GlWindow::new(window, context, event_loop)
 }
@@ -225,8 +227,10 @@ impl Window {
         let class = options.class.as_ref().map_or(DEFAULT_TITLE, |c| c);
         let window_builder = Window::get_platform_window(title, window_config);
         let window_builder = Window::platform_builder_ext(window_builder, &class);
-        let window = create_gl_window(window_builder.clone(), &event_loop, false)
-            .or_else(|_| create_gl_window(window_builder, &event_loop, true))?;
+        let window = create_gl_window(window_builder.clone(), &event_loop, true, false)
+            .or_else(|_| create_gl_window(window_builder.clone(), &event_loop, true, true))
+            .or_else(|_| create_gl_window(window_builder.clone(), &event_loop, false, false))
+            .or_else(|_| create_gl_window(window_builder, &event_loop, false, true))?;
         window.show();
 
         // Text cursor
